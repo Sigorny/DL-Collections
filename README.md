@@ -1,227 +1,477 @@
-![PHPMailer](https://raw.github.com/PHPMailer/PHPMailer/master/examples/images/phpmailer.png)
+![](https://github.com/googleapis/google-api-php-client/workflows/.github/workflows/tests.yml/badge.svg)
 
-# PHPMailer – A full-featured email creation and transfer class for PHP
+# Google APIs Client Library for PHP #
 
-[![Test status](https://github.com/PHPMailer/PHPMailer/workflows/Tests/badge.svg)](https://github.com/PHPMailer/PHPMailer/actions)
-[![codecov.io](https://codecov.io/gh/PHPMailer/PHPMailer/branch/master/graph/badge.svg?token=iORZpwmYmM)](https://codecov.io/gh/PHPMailer/PHPMailer)
-[![Latest Stable Version](https://poser.pugx.org/phpmailer/phpmailer/v/stable.svg)](https://packagist.org/packages/phpmailer/phpmailer)
-[![Total Downloads](https://poser.pugx.org/phpmailer/phpmailer/downloads)](https://packagist.org/packages/phpmailer/phpmailer)
-[![License](https://poser.pugx.org/phpmailer/phpmailer/license.svg)](https://packagist.org/packages/phpmailer/phpmailer)
-[![API Docs](https://github.com/phpmailer/phpmailer/workflows/Docs/badge.svg)](https://phpmailer.github.io/PHPMailer/)
+<dl>
+  <dt>Reference Docs</dt><dd><a href="https://googleapis.github.io/google-api-php-client/master/">https://googleapis.github.io/google-api-php-client/master/</a></dd>
+  <dt>License</dt><dd>Apache 2.0</dd>
+</dl>
 
-## Features
-- Probably the world's most popular code for sending email from PHP!
-- Used by many open-source projects: WordPress, Drupal, 1CRM, SugarCRM, Yii, Joomla! and many more
-- Integrated SMTP support – send without a local mail server
-- Send emails with multiple To, CC, BCC and Reply-to addresses
-- Multipart/alternative emails for mail clients that do not read HTML email
-- Add attachments, including inline
-- Support for UTF-8 content and 8bit, base64, binary, and quoted-printable encodings
-- SMTP authentication with LOGIN, PLAIN, CRAM-MD5, and XOAUTH2 mechanisms over SMTPS and SMTP+STARTTLS transports
-- Validates email addresses automatically
-- Protects against header injection attacks
-- Error messages in over 50 languages!
-- DKIM and S/MIME signing support
-- Compatible with PHP 5.5 and later, including PHP 8.1
-- Namespaced to prevent name clashes
-- Much more!
+The Google API Client Library enables you to work with Google APIs such as Gmail, Drive or YouTube on your server.
 
-## Why you might need it
-Many PHP developers need to send email from their code. The only PHP function that supports this directly is [`mail()`](https://www.php.net/manual/en/function.mail.php). However, it does not provide any assistance for making use of popular features such as encryption, authentication, HTML messages, and attachments.
+These client libraries are officially supported by Google.  However, the libraries are considered complete and are in maintenance mode. This means that we will address critical bugs and security issues but will not add any new features.
 
-Formatting email correctly is surprisingly difficult. There are myriad overlapping (and conflicting) standards, requiring tight adherence to horribly complicated formatting and encoding rules – the vast majority of code that you'll find online that uses the `mail()` function directly is just plain wrong, if not unsafe!
+## Google Cloud Platform
 
-The PHP `mail()` function usually sends via a local mail server, typically fronted by a `sendmail` binary on Linux, BSD, and macOS platforms, however, Windows usually doesn't include a local mail server; PHPMailer's integrated SMTP client allows email sending on all platforms without needing a local mail server. Be aware though, that the `mail()` function should be avoided when possible; it's both faster and [safer](https://exploitbox.io/paper/Pwning-PHP-Mail-Function-For-Fun-And-RCE.html) to use SMTP to localhost.
+For Google Cloud Platform APIs such as [Datastore][cloud-datastore], [Cloud Storage][cloud-storage], [Pub/Sub][cloud-pubsub], and [Compute Engine][cloud-compute], we recommend using the Google Cloud client libraries. For a complete list of supported Google Cloud client libraries, see [googleapis/google-cloud-php](https://github.com/googleapis/google-cloud-php).
 
-*Please* don't be tempted to do it yourself – if you don't use PHPMailer, there are many other excellent libraries that
-you should look at before rolling your own. Try [SwiftMailer](https://swiftmailer.symfony.com/)
-, [Laminas/Mail](https://docs.laminas.dev/laminas-mail/), [ZetaComponents](https://github.com/zetacomponents/Mail) etc.
+[cloud-datastore]: https://github.com/googleapis/google-cloud-php-datastore
+[cloud-pubsub]: https://github.com/googleapis/google-cloud-php-pubsub
+[cloud-storage]: https://github.com/googleapis/google-cloud-php-storage
+[cloud-compute]: https://github.com/googleapis/google-cloud-php-compute
 
-## License
-This software is distributed under the [LGPL 2.1](http://www.gnu.org/licenses/lgpl-2.1.html) license, along with the [GPL Cooperation Commitment](https://gplcc.github.io/gplcc/). Please read [LICENSE](https://github.com/PHPMailer/PHPMailer/blob/master/LICENSE) for information on the software availability and distribution.
+## Requirements ##
+* [PHP 5.6.0 or higher](https://www.php.net/)
 
-## Installation & loading
-PHPMailer is available on [Packagist](https://packagist.org/packages/phpmailer/phpmailer) (using semantic versioning), and installation via [Composer](https://getcomposer.org) is the recommended way to install PHPMailer. Just add this line to your `composer.json` file:
+## Developer Documentation ##
 
-```json
-"phpmailer/phpmailer": "^6.5"
-```
+The [docs folder](docs/) provides detailed guides for using this library.
 
-or run
+## Installation ##
+
+You can use **Composer** or simply **Download the Release**
+
+### Composer
+
+The preferred method is via [composer](https://getcomposer.org/). Follow the
+[installation instructions](https://getcomposer.org/doc/00-intro.md) if you do not already have
+composer installed.
+
+Once composer is installed, execute the following command in your project root to install this library:
 
 ```sh
-composer require phpmailer/phpmailer
+composer require google/apiclient:^2.11
 ```
 
-Note that the `vendor` folder and the `vendor/autoload.php` script are generated by Composer; they are not part of PHPMailer.
-
-If you want to use the Gmail XOAUTH2 authentication class, you will also need to add a dependency on the `league/oauth2-client` package in your `composer.json`.
-
-Alternatively, if you're not using Composer, you
-can [download PHPMailer as a zip file](https://github.com/PHPMailer/PHPMailer/archive/master.zip), (note that docs and examples are not included in the zip file), then copy the contents of the PHPMailer folder into one of the `include_path` directories specified in your PHP configuration and load each class file manually:
+Finally, be sure to include the autoloader:
 
 ```php
-<?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require 'path/to/PHPMailer/src/Exception.php';
-require 'path/to/PHPMailer/src/PHPMailer.php';
-require 'path/to/PHPMailer/src/SMTP.php';
+require_once '/path/to/your-project/vendor/autoload.php';
 ```
 
-If you're not using the `SMTP` class explicitly (you're probably not), you don't need a `use` line for the SMTP class. Even if you're not using exceptions, you do still need to load the `Exception` class as it is used internally.
+This library relies on `google/apiclient-services`. That library provides up-to-date API wrappers for a large number of Google APIs. In order that users may make use of the latest API clients, this library does not pin to a specific version of `google/apiclient-services`. **In order to prevent the accidental installation of API wrappers with breaking changes**, it is highly recommended that you pin to the [latest version](https://github.com/googleapis/google-api-php-client-services/releases) yourself prior to using this library in production.
 
-## Legacy versions
-PHPMailer 5.2 (which is compatible with PHP 5.0 — 7.0) is no longer supported, even for security updates. You will find the latest version of 5.2 in the [5.2-stable branch](https://github.com/PHPMailer/PHPMailer/tree/5.2-stable). If you're using PHP 5.5 or later (which you should be), switch to the 6.x releases.
+#### Cleaning up unused services
 
-### Upgrading from 5.2
-The biggest changes are that source files are now in the `src/` folder, and PHPMailer now declares the namespace `PHPMailer\PHPMailer`. This has several important effects – [read the upgrade guide](https://github.com/PHPMailer/PHPMailer/tree/master/UPGRADING.md) for more details.
+There are over 200 Google API services. The chances are good that you will not
+want them all. In order to avoid shipping these dependencies with your code,
+you can run the `Google\Task\Composer::cleanup` task and specify the services
+you want to keep in `composer.json`:
 
-### Minimal installation
-While installing the entire package manually or with Composer is simple, convenient, and reliable, you may want to include only vital files in your project. At the very least you will need [src/PHPMailer.php](https://github.com/PHPMailer/PHPMailer/tree/master/src/PHPMailer.php). If you're using SMTP, you'll need [src/SMTP.php](https://github.com/PHPMailer/PHPMailer/tree/master/src/SMTP.php), and if you're using POP-before SMTP (*very* unlikely!), you'll need [src/POP3.php](https://github.com/PHPMailer/PHPMailer/tree/master/src/POP3.php). You can skip the [language](https://github.com/PHPMailer/PHPMailer/tree/master/language/) folder if you're not showing errors to users and can make do with English-only errors. If you're using XOAUTH2 you will need [src/OAuth.php](https://github.com/PHPMailer/PHPMailer/tree/master/src/OAuth.php) as well as the Composer dependencies for the services you wish to authenticate with. Really, it's much easier to use Composer!
-
-## A Simple Example
-
-```php
-<?php
-//Import PHPMailer classes into the global namespace
-//These must be at the top of your script, not inside a function
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
-//Load Composer's autoloader
-require 'vendor/autoload.php';
-
-//Create an instance; passing `true` enables exceptions
-$mail = new PHPMailer(true);
-
-try {
-    //Server settings
-    $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-    $mail->isSMTP();                                            //Send using SMTP
-    $mail->Host       = 'smtp.example.com';                     //Set the SMTP server to send through
-    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-    $mail->Username   = 'user@example.com';                     //SMTP username
-    $mail->Password   = 'secret';                               //SMTP password
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-
-    //Recipients
-    $mail->setFrom('from@example.com', 'Mailer');
-    $mail->addAddress('joe@example.net', 'Joe User');     //Add a recipient
-    $mail->addAddress('ellen@example.com');               //Name is optional
-    $mail->addReplyTo('info@example.com', 'Information');
-    $mail->addCC('cc@example.com');
-    $mail->addBCC('bcc@example.com');
-
-    //Attachments
-    $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
-    $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
-
-    //Content
-    $mail->isHTML(true);                                  //Set email format to HTML
-    $mail->Subject = 'Here is the subject';
-    $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
-    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-
-    $mail->send();
-    echo 'Message has been sent';
-} catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+```json
+{
+    "require": {
+        "google/apiclient": "^2.11"
+    },
+    "scripts": {
+        "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
+    },
+    "extra": {
+        "google/apiclient-services": [
+            "Drive",
+            "YouTube"
+        ]
+    }
 }
 ```
 
-You'll find plenty to play with in the [examples](https://github.com/PHPMailer/PHPMailer/tree/master/examples) folder, which covers many common scenarios including sending through gmail, building contact forms, sending to mailing lists, and more.
+This example will remove all services other than "Drive" and "YouTube" when
+`composer update` or a fresh `composer install` is run.
 
-If you are re-using the instance (e.g. when sending to a mailing list), you may need to clear the recipient list to avoid sending duplicate messages. See [the mailing list example](https://github.com/PHPMailer/PHPMailer/blob/master/examples/mailing_list.phps) for further guidance.
-
-That's it. You should now be ready to use PHPMailer!
-
-## Localization
-PHPMailer defaults to English, but in the [language](https://github.com/PHPMailer/PHPMailer/tree/master/language/) folder you'll find many translations for PHPMailer error messages that you may encounter. Their filenames contain [ISO 639-1](http://en.wikipedia.org/wiki/ISO_639-1) language code for the translations, for example `fr` for French. To specify a language, you need to tell PHPMailer which one to use, like this:
-
-```php
-//To load the French version
-$mail->setLanguage('fr', '/optional/path/to/language/directory/');
-```
-
-We welcome corrections and new languages – if you're looking for corrections, run the [PHPMailerLangTest.php](https://github.com/PHPMailer/PHPMailer/tree/master/test/PHPMailerLangTest.php) script in the tests folder and it will show any missing translations.
-
-## Documentation
-Start reading at the [GitHub wiki](https://github.com/PHPMailer/PHPMailer/wiki). If you're having trouble, head for [the troubleshooting guide](https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting) as it's frequently updated.
-
-Examples of how to use PHPMailer for common scenarios can be found in the [examples](https://github.com/PHPMailer/PHPMailer/tree/master/examples) folder. If you're looking for a good starting point, we recommend you start with [the Gmail example](https://github.com/PHPMailer/PHPMailer/tree/master/examples/gmail.phps).
-
-To reduce PHPMailer's deployed code footprint, examples are not included if you load PHPMailer via Composer or via [GitHub's zip file download](https://github.com/PHPMailer/PHPMailer/archive/master.zip), so you'll need to either clone the git repository or use the above links to get to the examples directly.
-
-Complete generated API documentation is [available online](https://phpmailer.github.io/PHPMailer/).
-
-You can generate complete API-level documentation by running `phpdoc` in the top-level folder, and documentation will appear in the `docs` folder, though you'll need to have [PHPDocumentor](http://www.phpdoc.org) installed. You may find [the unit tests](https://github.com/PHPMailer/PHPMailer/blob/master/test/PHPMailerTest.php) a good reference for how to do various operations such as encryption.
-
-If the documentation doesn't cover what you need, search the [many questions on Stack Overflow](http://stackoverflow.com/questions/tagged/phpmailer), and before you ask a question about "SMTP Error: Could not connect to SMTP host.", [read the troubleshooting guide](https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting).
-
-## Tests
-[PHPMailer tests](https://github.com/PHPMailer/PHPMailer/tree/master/test/) use PHPUnit 9, with [a polyfill](https://github.com/Yoast/PHPUnit-Polyfills) to let 9-style tests run on older PHPUnit and PHP versions.
-
-[![Test status](https://github.com/PHPMailer/PHPMailer/workflows/Tests/badge.svg)](https://github.com/PHPMailer/PHPMailer/actions)
-
-If this isn't passing, is there something you can do to help?
-
-## Security
-Please disclose any vulnerabilities found responsibly – report security issues to the maintainers privately.
-
-See [SECURITY](https://github.com/PHPMailer/PHPMailer/tree/master/SECURITY.md) and [PHPMailer's security advisories on GitHub](https://github.com/PHPMailer/PHPMailer/security). 
-
-## Contributing
-Please submit bug reports, suggestions and pull requests to the [GitHub issue tracker](https://github.com/PHPMailer/PHPMailer/issues).
-
-We're particularly interested in fixing edge-cases, expanding test coverage and updating translations.
-
-If you found a mistake in the docs, or want to add something, go ahead and amend the wiki – anyone can edit it.
-
-If you have git clones from prior to the move to the PHPMailer GitHub organisation, you'll need to update any remote URLs referencing the old GitHub location with a command like this from within your clone:
+**IMPORTANT**: If you add any services back in `composer.json`, you will need to
+remove the `vendor/google/apiclient-services` directory explicity for the
+change you made to have effect:
 
 ```sh
-git remote set-url upstream https://github.com/PHPMailer/PHPMailer.git
+rm -r vendor/google/apiclient-services
+composer update
 ```
 
-Please *don't* use the SourceForge or Google Code projects any more; they are obsolete and no longer maintained.
+**NOTE**: This command performs an exact match on the service name, so to keep
+`YouTubeReporting` and `YouTubeAnalytics` as well, you'd need to add each of
+them explicitly:
 
-## Sponsorship
-Development time and resources for PHPMailer are provided by [Smartmessages.net](https://info.smartmessages.net/), the world's only privacy-first email marketing system.
+```json
+{
+    "extra": {
+        "google/apiclient-services": [
+            "Drive",
+            "YouTube",
+            "YouTubeAnalytics",
+            "YouTubeReporting"
+        ]
+    }
+}
+```
 
-<a href="https://info.smartmessages.net/"><img src="https://www.smartmessages.net/img/smartmessages-logo.svg" width="550" alt="Smartmessages.net privacy-first email marketing logo"></a>
+### Download the Release
 
-Donations are very welcome, whether in beer 🍺, T-shirts 👕, or cold, hard cash 💰. Sponsorship through GitHub is a simple and convenient way to say "thank you" to PHPMailer's maintainers and contributors – just click the "Sponsor" button [on the project page](https://github.com/PHPMailer/PHPMailer). If your company uses PHPMailer, consider taking part in Tidelift's enterprise support programme.
+If you prefer not to use composer, you can download the package in its entirety. The [Releases](https://github.com/googleapis/google-api-php-client/releases) page lists all stable versions. Download any file
+with the name `google-api-php-client-[RELEASE_NAME].zip` for a package including this library and its dependencies.
 
-## PHPMailer For Enterprise
+Uncompress the zip file you download, and include the autoloader in your project:
 
-Available as part of the Tidelift Subscription.
+```php
+require_once '/path/to/google-api-php-client/vendor/autoload.php';
+```
 
-The maintainers of PHPMailer and thousands of other packages are working with Tidelift to deliver commercial
-support and maintenance for the open source packages you use to build your applications. Save time, reduce risk, and
-improve code health, while paying the maintainers of the exact packages you
-use. [Learn more.](https://tidelift.com/subscription/pkg/packagist-phpmailer-phpmailer?utm_source=packagist-phpmailer-phpmailer&utm_medium=referral&utm_campaign=enterprise&utm_term=repo)
+For additional installation and setup instructions, see [the documentation](docs/).
 
-## Changelog
-See [changelog](changelog.md).
+## Examples ##
+See the [`examples/`](examples) directory for examples of the key client features. You can
+view them in your browser by running the php built-in web server.
 
-## History
-- PHPMailer was originally written in 2001 by Brent R. Matzelle as a [SourceForge project](http://sourceforge.net/projects/phpmailer/).
-- [Marcus Bointon](https://github.com/Synchro) (`coolbru` on SF) and Andy Prevost (`codeworxtech`) took over the project in 2004.
-- Became an Apache incubator project on Google Code in 2010, managed by Jim Jagielski.
-- Marcus created [his fork on GitHub](https://github.com/Synchro/PHPMailer) in 2008.
-- Jim and Marcus decide to join forces and use GitHub as the canonical and official repo for PHPMailer in 2013.
-- PHPMailer moves to [the PHPMailer organisation](https://github.com/PHPMailer) on GitHub in 2013.
+```
+$ php -S localhost:8000 -t examples/
+```
 
-### What's changed since moving from SourceForge?
-- Official successor to the SourceForge and Google Code projects.
-- Test suite.
-- Continuous integration with Github Actions.
-- Composer support.
-- Public development.
-- Additional languages and language strings.
-- CRAM-MD5 authentication support.
-- Preserves full repo history of authors, commits and branches from the original SourceForge project.
+And then browsing to the host and port you specified
+(in the above example, `http://localhost:8000`).
+
+### Basic Example ###
+
+```php
+// include your composer dependencies
+require_once 'vendor/autoload.php';
+
+$client = new Google\Client();
+$client->setApplicationName("Client_Library_Examples");
+$client->setDeveloperKey("YOUR_APP_KEY");
+
+$service = new Google\Service\Books($client);
+$query = 'Henry David Thoreau';
+$optParams = [
+  'filter' => 'free-ebooks',
+];
+$results = $service->volumes->listVolumes($query, $optParams);
+
+foreach ($results->getItems() as $item) {
+  echo $item['volumeInfo']['title'], "<br /> \n";
+}
+```
+
+### Authentication with OAuth ###
+
+> An example of this can be seen in [`examples/simple-file-upload.php`](examples/simple-file-upload.php).
+
+1. Follow the instructions to [Create Web Application Credentials](docs/oauth-web.md#create-authorization-credentials)
+1. Download the JSON credentials
+1. Set the path to these credentials using `Google\Client::setAuthConfig`:
+
+    ```php
+    $client = new Google\Client();
+    $client->setAuthConfig('/path/to/client_credentials.json');
+    ```
+
+1. Set the scopes required for the API you are going to call
+
+    ```php
+    $client->addScope(Google\Service\Drive::DRIVE);
+    ```
+
+1. Set your application's redirect URI
+
+    ```php
+    // Your redirect URI can be any registered URI, but in this example
+    // we redirect back to this same page
+    $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+    $client->setRedirectUri($redirect_uri);
+    ```
+
+1. In the script handling the redirect URI, exchange the authorization code for an access token:
+
+    ```php
+    if (isset($_GET['code'])) {
+        $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+    }
+    ```
+
+### Authentication with Service Accounts ###
+
+> An example of this can be seen in [`examples/service-account.php`](examples/service-account.php).
+
+Some APIs
+(such as the [YouTube Data API](https://developers.google.com/youtube/v3/)) do
+not support service accounts. Check with the specific API documentation if API
+calls return unexpected 401 or 403 errors.
+
+1. Follow the instructions to [Create a Service Account](docs/oauth-server.md#creating-a-service-account)
+1. Download the JSON credentials
+1. Set the path to these credentials using the `GOOGLE_APPLICATION_CREDENTIALS` environment variable:
+
+    ```php
+    putenv('GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json');
+    ```
+
+1. Tell the Google client to use your service account credentials to authenticate:
+
+    ```php
+    $client = new Google\Client();
+    $client->useApplicationDefaultCredentials();
+    ```
+
+1. Set the scopes required for the API you are going to call
+
+    ```php
+    $client->addScope(Google\Service\Drive::DRIVE);
+    ```
+
+1. If you have delegated domain-wide access to the service account and you want to impersonate a user account, specify the email address of the user account using the method setSubject:
+
+    ```php
+    $client->setSubject($user_to_impersonate);
+    ```
+
+#### How to use a specific JSON key
+
+If you want to a specific JSON key instead of using `GOOGLE_APPLICATION_CREDENTIALS` environment variable, you can do this:
+
+```php
+$jsonKey = [
+   'type' => 'service_account',
+   // ...
+];
+$client = new Google\Client();
+$client->setAuthConfig($jsonKey);
+```
+
+### Making Requests ###
+
+The classes used to call the API in [google-api-php-client-services](https://github.com/googleapis/google-api-php-client-services) are autogenerated. They map directly to the JSON requests and responses found in the [APIs Explorer](https://developers.google.com/apis-explorer/#p/).
+
+A JSON request to the [Datastore API](https://developers.google.com/apis-explorer/#p/datastore/v1beta3/datastore.projects.runQuery) would look like this:
+
+```json
+POST https://datastore.googleapis.com/v1beta3/projects/YOUR_PROJECT_ID:runQuery?key=YOUR_API_KEY
+
+{
+    "query": {
+        "kind": [{
+            "name": "Book"
+        }],
+        "order": [{
+            "property": {
+                "name": "title"
+            },
+            "direction": "descending"
+        }],
+        "limit": 10
+    }
+}
+```
+
+Using this library, the same call would look something like this:
+
+```php
+// create the datastore service class
+$datastore = new Google\Service\Datastore($client);
+
+// build the query - this maps directly to the JSON
+$query = new Google\Service\Datastore\Query([
+    'kind' => [
+        [
+            'name' => 'Book',
+        ],
+    ],
+    'order' => [
+        'property' => [
+            'name' => 'title',
+        ],
+        'direction' => 'descending',
+    ],
+    'limit' => 10,
+]);
+
+// build the request and response
+$request = new Google\Service\Datastore\RunQueryRequest(['query' => $query]);
+$response = $datastore->projects->runQuery('YOUR_DATASET_ID', $request);
+```
+
+However, as each property of the JSON API has a corresponding generated class, the above code could also be written like this:
+
+```php
+// create the datastore service class
+$datastore = new Google\Service\Datastore($client);
+
+// build the query
+$request = new Google\Service\Datastore_RunQueryRequest();
+$query = new Google\Service\Datastore\Query();
+//   - set the order
+$order = new Google\Service\Datastore_PropertyOrder();
+$order->setDirection('descending');
+$property = new Google\Service\Datastore\PropertyReference();
+$property->setName('title');
+$order->setProperty($property);
+$query->setOrder([$order]);
+//   - set the kinds
+$kind = new Google\Service\Datastore\KindExpression();
+$kind->setName('Book');
+$query->setKinds([$kind]);
+//   - set the limit
+$query->setLimit(10);
+
+// add the query to the request and make the request
+$request->setQuery($query);
+$response = $datastore->projects->runQuery('YOUR_DATASET_ID', $request);
+```
+
+The method used is a matter of preference, but *it will be very difficult to use this library without first understanding the JSON syntax for the API*, so it is recommended to look at the [APIs Explorer](https://developers.google.com/apis-explorer/#p/) before using any of the services here.
+
+### Making HTTP Requests Directly ###
+
+If Google Authentication is desired for external applications, or a Google API is not available yet in this library, HTTP requests can be made directly.
+
+If you are installing this client only to authenticate your own HTTP client requests, you should use [`google/auth`](https://github.com/googleapis/google-auth-library-php#call-the-apis) instead.
+
+The `authorize` method returns an authorized [Guzzle Client](http://docs.guzzlephp.org/), so any request made using the client will contain the corresponding authorization.
+
+```php
+// create the Google client
+$client = new Google\Client();
+
+/**
+ * Set your method for authentication. Depending on the API, This could be
+ * directly with an access token, API key, or (recommended) using
+ * Application Default Credentials.
+ */
+$client->useApplicationDefaultCredentials();
+$client->addScope(Google\Service\Plus::PLUS_ME);
+
+// returns a Guzzle HTTP Client
+$httpClient = $client->authorize();
+
+// make an HTTP request
+$response = $httpClient->get('https://www.googleapis.com/plus/v1/people/me');
+```
+
+### Caching ###
+
+It is recommended to use another caching library to improve performance. This can be done by passing a [PSR-6](https://www.php-fig.org/psr/psr-6/) compatible library to the client:
+
+```php
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
+use Cache\Adapter\Filesystem\FilesystemCachePool;
+
+$filesystemAdapter = new Local(__DIR__.'/');
+$filesystem        = new Filesystem($filesystemAdapter);
+
+$cache = new FilesystemCachePool($filesystem);
+$client->setCache($cache);
+```
+
+In this example we use [PHP Cache](http://www.php-cache.com/). Add this to your project with composer:
+
+```
+composer require cache/filesystem-adapter
+```
+
+### Updating Tokens ###
+
+When using [Refresh Tokens](https://developers.google.com/identity/protocols/OAuth2InstalledApp#offline) or [Service Account Credentials](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#overview), it may be useful to perform some action when a new access token is granted. To do this, pass a callable to the `setTokenCallback` method on the client:
+
+```php
+$logger = new Monolog\Logger();
+$tokenCallback = function ($cacheKey, $accessToken) use ($logger) {
+  $logger->debug(sprintf('new access token received at cache key %s', $cacheKey));
+};
+$client->setTokenCallback($tokenCallback);
+```
+
+### Debugging Your HTTP Request using Charles ###
+
+It is often very useful to debug your API calls by viewing the raw HTTP request. This library supports the use of [Charles Web Proxy](https://www.charlesproxy.com/documentation/getting-started/). Download and run Charles, and then capture all HTTP traffic through Charles with the following code:
+
+```php
+// FOR DEBUGGING ONLY
+$httpClient = new GuzzleHttp\Client([
+    'proxy' => 'localhost:8888', // by default, Charles runs on localhost port 8888
+    'verify' => false, // otherwise HTTPS requests will fail.
+]);
+
+$client = new Google\Client();
+$client->setHttpClient($httpClient);
+```
+
+Now all calls made by this library will appear in the Charles UI.
+
+One additional step is required in Charles to view SSL requests. Go to **Charles > Proxy > SSL Proxying Settings** and add the domain you'd like captured. In the case of the Google APIs, this is usually `*.googleapis.com`.
+
+### Controlling HTTP Client Configuration Directly
+
+Google API Client uses [Guzzle](http://docs.guzzlephp.org/) as its default HTTP client. That means that you can control your HTTP requests in the same manner you would for any application using Guzzle.
+
+Let's say, for instance, we wished to apply a referrer to each request.
+
+```php
+use GuzzleHttp\Client;
+
+$httpClient = new Client([
+    'headers' => [
+        'referer' => 'mysite.com'
+    ]
+]);
+
+$client = new Google\Client();
+$client->setHttpClient($httpClient);
+```
+
+Other Guzzle features such as [Handlers and Middleware](http://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) offer even more control.
+
+### Service Specific Examples ###
+
+YouTube: https://github.com/youtube/api-samples/tree/master/php
+
+## How Do I Contribute? ##
+
+Please see the [contributing](.github/CONTRIBUTING.md) page for more information. In particular, we love pull requests - but please make sure to sign the contributor license agreement.
+
+## Frequently Asked Questions ##
+
+### What do I do if something isn't working? ###
+
+For support with the library the best place to ask is via the google-api-php-client tag on StackOverflow: https://stackoverflow.com/questions/tagged/google-api-php-client
+
+If there is a specific bug with the library, please [file an issue](https://github.com/googleapis/google-api-php-client/issues) in the GitHub issues tracker, including an example of the failing code and any specific errors retrieved. Feature requests can also be filed, as long as they are core library requests, and not-API specific: for those, refer to the documentation for the individual APIs for the best place to file requests. Please try to provide a clear statement of the problem that the feature would address.
+
+### I want an example of X! ###
+
+If X is a feature of the library, file away! If X is an example of using a specific service, the best place to go is to the teams for those specific APIs - our preference is to link to their examples rather than add them to the library, as they can then pin to specific versions of the library. If you have any examples for other APIs, let us know and we will happily add a link to the README above!
+
+### Why do some Google\Service classes have weird names? ###
+
+The _Google\Service_ classes are generally automatically generated from the API discovery documents: https://developers.google.com/discovery/. Sometimes new features are added to APIs with unusual names, which can cause some unexpected or non-standard style naming in the PHP classes.
+
+### How do I deal with non-JSON response types? ###
+
+Some services return XML or similar by default, rather than JSON, which is what the library supports. You can request a JSON response by adding an 'alt' argument to optional params that is normally the last argument to a method call:
+
+```
+$opt_params = array(
+  'alt' => "json"
+);
+```
+
+### How do I set a field to null? ###
+
+The library strips out nulls from the objects sent to the Google APIs as its the default value of all of the uninitialized properties. To work around this, set the field you want to null to `Google\Model::NULL_VALUE`. This is a placeholder that will be replaced with a true null when sent over the wire.
+
+## Code Quality ##
+
+Run the PHPUnit tests with PHPUnit. You can configure an API key and token in BaseTest.php to run all calls, but this will require some setup on the Google Developer Console.
+
+    phpunit tests/
+
+### Coding Style
+
+To check for coding style violations, run
+
+```
+vendor/bin/phpcs src --standard=style/ruleset.xml -np
+```
+
+To automatically fix (fixable) coding style violations, run
+
+```
+vendor/bin/phpcbf src --standard=style/ruleset.xml
+```
